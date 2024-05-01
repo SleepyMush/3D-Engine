@@ -27,6 +27,9 @@
     <ClCompile Include="src\Render\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Scene\Scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Windows.h">
@@ -35,5 +38,12 @@
     <ClInclude Include="src\Render\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Scene\Scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\shader\Main.vert" />
+    <None Include="res\shader\Main.frag" />
   </ItemGroup>
 </Project>
