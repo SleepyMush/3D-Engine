@@ -7,7 +7,7 @@ struct Vertex
 {
 	glm::vec2 position;
 };
-unsigned int VBO, VAO, EBO;
+unsigned int VBO, VAO;
 std::vector<Vertex> vertices;
 
 void Scene::loadScene()
@@ -18,8 +18,8 @@ void Scene::loadScene()
 	Vertex v1;
 	Vertex v2;
 	Vertex v3;
-	v0.position = glm::vec2(-0.5f, -0.5f );
-	v1.position = glm::vec2(0.5f, -0.5f );
+	v0.position = glm::vec2(-0.5f, -0.5f);
+	v1.position = glm::vec2(0.5f, -0.5f);
 	v2.position = glm::vec2(0.5f, 0.5f);
 	v3.position = glm::vec2(-0.5f, 0.5f);
 	vertices.push_back(v0);
@@ -34,10 +34,10 @@ void Scene::loadScene()
 	glBindVertexArray(VAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), NULL, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
 
 	// position attribute
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, vertices.size() * sizeof(Vertex), (void*)0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
 	glEnableVertexAttribArray(0);
 
 }
