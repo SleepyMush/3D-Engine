@@ -159,12 +159,18 @@ void Scene::renderScene()
 	glm::mat4 model = glm::mat4(1.0f);
 	glm::mat4 view = glm::mat4(1.0f);
 	glm::mat4 projection = glm::mat4(1.0f);
-	
+
+	float x, y, z;
+	x = 5;
+	y = 0;
+	z = 1;
+	model = glm::translate(model, glm::vec3(x, y, z));
+
 	glm::vec3 _cameraPos(0.0f);
 	glm::mat4 cameraMat(1.0f);
 	cameraMat = glm::rotate(glm::mat4(1.0f), glm::radians(-30.0f), glm::vec3(1.0f, 0.0f, 0.0f)) * cameraMat;
 	cameraMat = glm::rotate(glm::mat4(1.0f), glm::radians(-45.0f), glm::vec3(0.0f, 1.0f, 0.0f)) * cameraMat;
-	cameraMat = glm::translate(cameraMat, glm::vec3(0.0f, 0.0f, 10.0f));
+	cameraMat = glm::translate(cameraMat, glm::vec3(0.0f, 0.0f, 5.0f));
 	view = glm::inverse(cameraMat);
 	view = glm::translate(view, _cameraPos);
 
@@ -178,6 +184,9 @@ void Scene::renderScene()
 	glBindVertexArray(0);
 
 	//Grid
+	shader.setMat4("projection", projection);
+	shader.setMat4("view", view);
+	shader.setMat4("model", glm::mat4(1.0f));
 	glBindVertexArray(GVAO);
 	glDrawElements(GL_LINES, lenght, GL_UNSIGNED_INT, NULL);
 
