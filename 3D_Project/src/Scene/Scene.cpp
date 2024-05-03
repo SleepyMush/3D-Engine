@@ -4,7 +4,6 @@
 #include <GLFW/glfw3.h>
 
 Shader shader;
-//Shader Geomerty_Grid;
 Window window;
 
 struct Vertex
@@ -18,14 +17,14 @@ std::vector<Vertex> vertices;
 std::vector<glm::vec3> vertex;
 std::vector<glm::uvec4> index;
 
-float slice = 10.0f;
+int slice = 10;
 unsigned int lenght = 0;
+float Scale = 10.0f;
 
 void Scene::loadScene()
 {
 	//Loads Cube
 	shader.load("res/shader/Main.vert", "res/shader/Main.frag");
-	//Geomerty_Grid.load("","");
 
 	Vertex v0;
 	Vertex v1;
@@ -114,7 +113,9 @@ void Scene::loadScene()
 			float x = (float)i / (float)slice;
 			float y = 0;
 			float z = (float)v / (float)slice;
-			vertex.push_back(glm::vec3(x, y, z));
+
+			glm::vec3 scaledVertex = glm::vec3(x, y, z) * Scale;
+			vertex.push_back(scaledVertex);
 		}
 	}
 
@@ -163,7 +164,7 @@ void Scene::renderScene()
 	glm::mat4 cameraMat(1.0f);
 	cameraMat = glm::rotate(glm::mat4(1.0f), glm::radians(-30.0f), glm::vec3(1.0f, 0.0f, 0.0f)) * cameraMat;
 	cameraMat = glm::rotate(glm::mat4(1.0f), glm::radians(-45.0f), glm::vec3(0.0f, 1.0f, 0.0f)) * cameraMat;
-	cameraMat = glm::translate(cameraMat, glm::vec3(0.0f, 0.0f, 4.0f));
+	cameraMat = glm::translate(cameraMat, glm::vec3(0.0f, 0.0f, 10.0f));
 	view = glm::inverse(cameraMat);
 	view = glm::translate(view, _cameraPos);
 
