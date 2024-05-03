@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 
 Shader shader;
+//Shader Geomerty_Grid;
 Window window;
 
 struct Vertex
@@ -11,11 +12,20 @@ struct Vertex
 	glm::vec3 position;
 };
 unsigned int VBO, VAO;
+unsigned int GVBO, GVAO, IBO;
 std::vector<Vertex> vertices;
+
+std::vector<glm::vec3> vertex;
+std::vector<glm::uvec4> index;
+
+float slice = 10.0f;
+unsigned int lenght = 0;
 
 void Scene::loadScene()
 {
+	//Loads Cube
 	shader.load("res/shader/Main.vert", "res/shader/Main.frag");
+	//Geomerty_Grid.load("","");
 
 	Vertex v0;
 	Vertex v1;
@@ -95,6 +105,51 @@ void Scene::loadScene()
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
 	glEnableVertexAttribArray(0);
 
+
+	//Loads Grid
+
+	//Vertex
+	for (int v = 0; v <= slice; ++v){
+		for (int i = 0; i <= slice; ++i) {
+			float x = (float)i / (float)slice;
+			float y = 0;
+			float z = (float)v / (float)slice;
+			vertex.push_back(glm::vec3(x, y, z));
+		}
+	}
+
+	//Index
+	for (int v = 0; v < slice; ++v) {
+		for (int i = 0; i < slice; ++i) {
+			int row1 = v * (slice + 1);
+			int row2 = (v+1) * (slice + 1);
+			index.push_back(glm::uvec4(row1 + i, row1 + i + 1, row1 + i + 1, row2 + i + 1));
+			index.push_back(glm::uvec4(row2 + i + 1, row2 + i , row2 + i , row1 + i));
+		}
+	}
+
+
+	glGenBuffers(1, &GVBO);
+	glGenVertexArrays(1, &GVAO);
+	glBindVertexArray(GVAO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, GVBO);
+	glBufferData(GL_ARRAY_BUFFER, vertex.size() * sizeof(glm::vec3), vertex.data(), GL_STATIC_DRAW);
+
+	//// position attribute
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	glGenBuffers(1, &IBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, index.size() * sizeof(index.data()), index.data(), GL_STATIC_DRAW);
+
+	glBindVertexArray(0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	
+	
+	lenght = (GLuint)index.size() * 4;
 }
 
 void Scene::renderScene()
@@ -103,9 +158,15 @@ void Scene::renderScene()
 	glm::mat4 model = glm::mat4(1.0f);
 	glm::mat4 view = glm::mat4(1.0f);
 	glm::mat4 projection = glm::mat4(1.0f);
+	
+	glm::vec3 _cameraPos(0.0f);
+	glm::mat4 cameraMat(1.0f);
+	cameraMat = glm::rotate(glm::mat4(1.0f), glm::radians(-30.0f), glm::vec3(1.0f, 0.0f, 0.0f)) * cameraMat;
+	cameraMat = glm::rotate(glm::mat4(1.0f), glm::radians(-45.0f), glm::vec3(0.0f, 1.0f, 0.0f)) * cameraMat;
+	cameraMat = glm::translate(cameraMat, glm::vec3(0.0f, 0.0f, 4.0f));
+	view = glm::inverse(cameraMat);
+	view = glm::translate(view, _cameraPos);
 
-	model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
-	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 	projection = glm::perspective(glm::radians(45.0f), (float)window.screen_width / (float)window.screen_height, 0.1f, 100.0f);
 
 	shader.setMat4("projection", projection);
@@ -113,5 +174,10 @@ void Scene::renderScene()
 	shader.setMat4("model", model);
 	glBindVertexArray(VAO);
 	glDrawArrays(GL_TRIANGLES, 0, vertices.size());
+	glBindVertexArray(0);
+
+	//Grid
+	glBindVertexArray(GVAO);
+	glDrawElements(GL_LINES, lenght, GL_UNSIGNED_INT, NULL);
 
 }

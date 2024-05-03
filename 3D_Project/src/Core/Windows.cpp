@@ -2,6 +2,7 @@
 #include "../Scene/Scene.h"
 
 Scene scene;
+Window win;
 
 void Window::init()
 {
@@ -37,7 +38,7 @@ void Window::run()
 	{
 		glfwPollEvents();
 
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		scene.renderScene();
@@ -52,6 +53,8 @@ void Window::run()
 void Window::framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
 	glViewport(0, 0, width, height);
+	win.screen_width = width;
+	win.screen_height = height;
 }
 
 
