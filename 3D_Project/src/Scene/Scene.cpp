@@ -1,10 +1,13 @@
 #include "Scene.h"
 #include "../Core/Windows.h"
 #include "../Render/Shader.h"
+#include "../Core/Text_Render.h"
 #include <GLFW/glfw3.h>
 
 Shader shader;
+Shader Text_Render;
 Window window;
+Text text;
 
 struct Vertex
 {
@@ -152,6 +155,32 @@ void Scene::loadScene()
 	
 	
 	lenght = (GLuint)index.size() * 4;
+
+	//Text
+	text.init();
+	Text_Render.load("res/shader/Text_Render.vert", "res/shader/Text_Render.frag");
+
+	for (int i = 0; i < ARRAY_LIMIT; i++) {
+		letterMap.push_back(0);
+		T.push_back(glm::mat4(1.0f));
+	}
+	GLfloat vertex_data[] = {
+	0.0f,1.0f,
+	0.0f,0.0f,
+	1.0f,1.0f,
+	1.0f,0.0f,
+	};
+
+	glGenVertexArrays(1, &TVAO);
+	glGenBuffers(1, &TVBO);
+	glBindVertexArray(TVAO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, TVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_data), vertex_data, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
 }
 
 void Scene::renderScene()
@@ -186,17 +215,16 @@ void Scene::renderScene()
 	glBindVertexArray(GVAO);
 	glDrawElements(GL_LINES, lenght, GL_UNSIGNED_INT, NULL);
 
+	//Text
+	float left, right, bottom, top;
+	left = 0;
+	right = window.screen_width;
+	bottom = 0;
+	top = window.screen_height;
+	projection = glm::ortho(left, right, bottom, top, -1.0f, 1.0f);
+
+	Text_Render.use();
+	Text_Render.setMat4("projection", projection);
+	text.RenderText(Text_Render, "Hello There", 0.0f, 5.0f, 5.0f, glm::vec3(0.2, 0.5f, 0.6f));
+
 }
-
-//glm::vec3 _cameraPos(0.0f);
-//glm::mat4 cameraMat(1.0f);
-//cameraMat = glm::rotate(glm::mat4(1.0f), glm::radians(-30.0f), glm::vec3(1.0f, 0.0f, 0.0f)) * cameraMat;
-//cameraMat = glm::rotate(glm::mat4(1.0f), glm::radians(-45.0f), glm::vec3(0.0f, 1.0f, 0.0f)) * cameraMat;
-//cameraMat = glm::translate(cameraMat, glm::vec3(0.0f, 0.0f, 10.0f));
-//view = glm::inverse(cameraMat);
-//view = glm::translate(view, _cameraPos);
-
-//glm::vec3 getposition = glm::vec3(0.0f, 10.0f, -10.0f);
-//glm::vec3 getForward = glm::vec3(0.0f, 0.0f, 0.0f);
-//glm::vec3 getUp = glm::vec3(0.0f, 1.0f, 0.0f);
-//view = glm::lookAt(getposition, getForward, getUp);

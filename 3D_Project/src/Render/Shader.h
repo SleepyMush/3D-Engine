@@ -10,9 +10,9 @@
 
 class Shader {
 private:
-	unsigned int ID;
 	void checkCompileErrors(unsigned int shader, std::string type);
 public:
+	unsigned int ID;
 	Shader() : ID(0) {};
 	void load(const char* vertexPath, const char* fragmentPath);
 	void use();

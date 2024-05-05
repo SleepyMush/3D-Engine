@@ -30,6 +30,9 @@
     <ClCompile Include="src\Scene\Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Core\Text_Render.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Windows.h">
@@ -41,9 +44,14 @@
     <ClInclude Include="src\Scene\Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Core\Text_Render.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shader\Main.vert" />
     <None Include="res\shader\Main.frag" />
+    <None Include="res\shader\Text-Render.frag" />
+    <None Include="res\shader\Text-Render.vert" />
   </ItemGroup>
 </Project>
