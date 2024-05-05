@@ -17,6 +17,7 @@ std::vector<Vertex> vertices;
 std::vector<glm::vec3> vertex;
 std::vector<glm::uvec4> index;
 
+
 int slice = 10;
 unsigned int lenght = 0;
 float Scale = 10.0f;
@@ -163,16 +164,13 @@ void Scene::renderScene()
 	float x, y, z;
 	x = 5;
 	y = 0;
-	z = 1;
+	z = 4;
 	model = glm::translate(model, glm::vec3(x, y, z));
 
-	glm::vec3 _cameraPos(0.0f);
-	glm::mat4 cameraMat(1.0f);
-	cameraMat = glm::rotate(glm::mat4(1.0f), glm::radians(-30.0f), glm::vec3(1.0f, 0.0f, 0.0f)) * cameraMat;
-	cameraMat = glm::rotate(glm::mat4(1.0f), glm::radians(-45.0f), glm::vec3(0.0f, 1.0f, 0.0f)) * cameraMat;
-	cameraMat = glm::translate(cameraMat, glm::vec3(0.0f, 0.0f, 5.0f));
-	view = glm::inverse(cameraMat);
-	view = glm::translate(view, _cameraPos);
+	glm::vec3 getForward = glm::vec3(0.0f, 0.0f, 0.0f);
+	glm::vec3 getposition = glm::vec3(0.0f, 10.0f, -10.0f);
+	glm::vec3 getUp = glm::vec3(0.0f, 1.0f, 0.0f);
+	view = glm::lookAt(getposition + getForward, getForward, getUp);
 
 	projection = glm::perspective(glm::radians(45.0f), (float)window.screen_width / (float)window.screen_height, 0.1f, 100.0f);
 
@@ -184,10 +182,21 @@ void Scene::renderScene()
 	glBindVertexArray(0);
 
 	//Grid
-	shader.setMat4("projection", projection);
-	shader.setMat4("view", view);
 	shader.setMat4("model", glm::mat4(1.0f));
 	glBindVertexArray(GVAO);
 	glDrawElements(GL_LINES, lenght, GL_UNSIGNED_INT, NULL);
 
 }
+
+//glm::vec3 _cameraPos(0.0f);
+//glm::mat4 cameraMat(1.0f);
+//cameraMat = glm::rotate(glm::mat4(1.0f), glm::radians(-30.0f), glm::vec3(1.0f, 0.0f, 0.0f)) * cameraMat;
+//cameraMat = glm::rotate(glm::mat4(1.0f), glm::radians(-45.0f), glm::vec3(0.0f, 1.0f, 0.0f)) * cameraMat;
+//cameraMat = glm::translate(cameraMat, glm::vec3(0.0f, 0.0f, 10.0f));
+//view = glm::inverse(cameraMat);
+//view = glm::translate(view, _cameraPos);
+
+//glm::vec3 getposition = glm::vec3(0.0f, 10.0f, -10.0f);
+//glm::vec3 getForward = glm::vec3(0.0f, 0.0f, 0.0f);
+//glm::vec3 getUp = glm::vec3(0.0f, 1.0f, 0.0f);
+//view = glm::lookAt(getposition, getForward, getUp);
