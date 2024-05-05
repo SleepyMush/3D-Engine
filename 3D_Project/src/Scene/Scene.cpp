@@ -5,7 +5,7 @@
 #include <GLFW/glfw3.h>
 
 Shader shader;
-Shader Text_Render;
+Shader text_render;
 Window window;
 Text text;
 
@@ -158,11 +158,11 @@ void Scene::loadScene()
 
 	//Text
 	text.init();
-	Text_Render.load("res/shader/Text_Render.vert", "res/shader/Text_Render.frag");
+	text_render.load("res/shader/Text-Render.vert", "res/shader/Text-Render.frag");
 
-	for (int i = 0; i < ARRAY_LIMIT; i++) {
-		letterMap.push_back(0);
-		T.push_back(glm::mat4(1.0f));
+	for (int i = 0; i < text.ARRAY_LIMIT; i++) {
+		text.letterMap.push_back(0);
+		text.T.push_back(glm::mat4(1.0f));
 	}
 	GLfloat vertex_data[] = {
 	0.0f,1.0f,
@@ -171,11 +171,11 @@ void Scene::loadScene()
 	1.0f,0.0f,
 	};
 
-	glGenVertexArrays(1, &TVAO);
-	glGenBuffers(1, &TVBO);
-	glBindVertexArray(TVAO);
+	glGenVertexArrays(1, &text.TVAO);
+	glGenBuffers(1, &text.TVBO);
+	glBindVertexArray(text.TVAO);
 
-	glBindBuffer(GL_ARRAY_BUFFER, TVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, text.TVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_data), vertex_data, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
@@ -223,8 +223,8 @@ void Scene::renderScene()
 	top = window.screen_height;
 	projection = glm::ortho(left, right, bottom, top, -1.0f, 1.0f);
 
-	Text_Render.use();
-	Text_Render.setMat4("projection", projection);
-	text.RenderText(Text_Render, "Hello There", 0.0f, 5.0f, 5.0f, glm::vec3(0.2, 0.5f, 0.6f));
+	text_render.use();
+	text_render.setMat4("projection", projection);
+	text.RenderText(text_render, "Hello There", 100.0f, 900.0f, 1.0f, glm::vec3(256.0, 256.0f, 256.0f));
 
 }
