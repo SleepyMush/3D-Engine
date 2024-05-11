@@ -164,6 +164,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="glad.c" />
+    <ClCompile Include="src\Core\Debug.cpp" />
     <ClCompile Include="src\Core\Text_Render.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Core\Windows.cpp" />
@@ -171,12 +172,14 @@
     <ClCompile Include="src\Scene\Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Core\Debug.h" />
     <ClInclude Include="src\Core\Text_Render.h" />
     <ClInclude Include="src\Core\Windows.h" />
     <ClInclude Include="src\Render\Shader.h" />
     <ClInclude Include="src\Scene\Scene.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="cpp.hint" />
     <None Include="res\shader\Main.frag" />
     <None Include="res\shader\Main.vert" />
     <None Include="res\shader\Text-Render.frag" />

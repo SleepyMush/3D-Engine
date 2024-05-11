@@ -3,6 +3,10 @@
 
 Window windows;
 
+extern "C" {
+	__declspec(dllexport) uint32_t NvOptimusEnablement = 1;
+}
+
 int main() 
 {
 	windows.init();

@@ -1,8 +1,10 @@
 #include "Windows.h"
+#include "Debug.h"
 #include "../Scene/Scene.h"
 
 Scene scene;
 Window win;
+Debug debug;
 
 void Window::init()
 {
@@ -10,6 +12,7 @@ void Window::init()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
 
 	window = glfwCreateWindow(screen_width, screen_height, "3D Program", nullptr, nullptr);
 	if (window == NULL) {
@@ -25,6 +28,8 @@ void Window::init()
 		std::cout << "Glad isn't inotalized" << std::endl;
 		return;
 	}
+	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+	glDebugMessageCallback(debug.glDebugOutput, nullptr);
 
 	glEnable(GL_DEPTH_TEST);
 
